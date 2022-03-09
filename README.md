@@ -7,7 +7,7 @@ Créer un fichier de configuration nommé configuration.env à la racine avec le
 
 >HOST_BD="***********"  string host de la base de données.
 
->PWD_BD="*************" tring password de la base de données.
+>PWD_BD="*************" string password de la base de données.
 
 >NAME_BD="************" string nom de la base de données.
 
@@ -15,7 +15,9 @@ Créer un fichier de configuration nommé configuration.env à la racine avec le
 
 >SYSTEME_BD="***********" string nom système de la base de données (obligatoire ):mysql.
 
->SECRET_RANDOM="***********" string nom secret pour  le pour le token.
+>SECRET_RANDOM="***********" string nom secret pour le token.
 
 ## lancer l'API 
 npm start
+### lien du depôt github
+https://github.com/biackgeordel/backendProjet7
