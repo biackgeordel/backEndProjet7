@@ -7,6 +7,7 @@ const like=require('../models/like');
 const disLike=require('../models/dislike');
 const fs=require('fs');
 
+//function pour créer un message
 exports.createdMessage=(req,res,next)=>{
   
   const msgObject=JSON.parse(req.body.message);
@@ -37,7 +38,7 @@ exports.createdMessage=(req,res,next)=>{
     sequelize.sync();
    
 }
-
+//function pour recupérer tous les message
 exports.getAllMessage= async (req,res,next)=>{
   const allMessage= await message.findAll(
     {
@@ -50,7 +51,7 @@ exports.getAllMessage= async (req,res,next)=>{
         },
       {
           model:commentaire,
-           attributes:['description','dateCommentaire'],
+           attributes:['id','description','dateCommentaire'],
           separate:true,
           order:[['createdAt','DESC']],
             include:[
@@ -63,10 +64,22 @@ exports.getAllMessage= async (req,res,next)=>{
         },
         {
           model:like,
+          include:[
+           {
+             model:user,
+             attributes:['username']
+           }
+          ]
     
         },
         {
-          model:disLike
+          model:disLike,
+          include:[
+            {
+              model:user,
+              attributes:['username']
+            }
+           ]
         }
      
       ]
@@ -79,6 +92,7 @@ exports.getAllMessage= async (req,res,next)=>{
   }
 
 }
+//function pour recupérer un message
 exports.getOneMessage=(req,res,next)=>{
   console.log('params',req.params.id)
   message.findByPk(req.params.id,{
@@ -88,7 +102,7 @@ exports.getOneMessage=(req,res,next)=>{
       },
       {
         model:commentaire,
-        attributes:['description','createdAt'],
+        attributes:['id,description','createdAt'],
         separate:true,
         order:[['createdAt','DESC']],
           include:[
@@ -114,6 +128,8 @@ exports.getOneMessage=(req,res,next)=>{
       console.log(error)
   })
 }
+
+//function pour supprimer un message
 exports.deleteMessage=async(req,res,next)=>{
   console.log(req.params.id);
   console.log(req.params.user);

@@ -1,5 +1,7 @@
 const sequelize=require('../database');
 const like=require('../models/like');
+const user=require('../models/user');
+//function pour ajouter les like
 exports.addLike=(req,res,next)=>{
     sequelize.sync().then(async()=>{
       const test=await like.findOne({
@@ -8,17 +10,24 @@ exports.addLike=(req,res,next)=>{
             UserId:req.body.UserId
 
           }});
-          console.log("valeur de test: "+test);
+          console.log(test);
           if(!test){
             like.create({
                 MessageId:req.body.MessageId,
                UserId:req.body.UserId
         
-            }).then(like=>{
-                console.log(like);
-           
-                res.status(200).json(like);
-            
+            }).then((likes)=>{
+                like.findByPk(likes.id,{
+                    include:[{
+                        model:user,
+                        attributes:['username']
+                    }]
+                }).then(likeExist=>{
+                    res.status(200).json(likeExist);
+                }).catch(error=>{
+                    console.log(error);
+                })
+   
             }).catch(error=>{
               console.log(error);
                 
@@ -34,6 +43,7 @@ exports.addLike=(req,res,next)=>{
 
 
 };
+//function pour supprimer un like
 exports.deleteLike=(req,res,next)=>{
     console.log(req.params.id);
     console.log(req.params.user);

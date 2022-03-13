@@ -1,6 +1,8 @@
 
 const sequelize=require('../database');
 const DisLike = require('../models/dislike');
+const user=require('../models/user');
+//function pour ajouter un dislike
 exports.addDisLike=(req,res,next)=>{
     sequelize.sync().then(async()=>{
        const test=await DisLike.findOne({
@@ -14,10 +16,17 @@ exports.addDisLike=(req,res,next)=>{
                 MessageId:req.body.MessageId,
                UserId:req.body.UserId
         
-            }).then(disLike=>{
-                console.log(disLike);
-           
-                res.status(200).json(disLike);
+            }).then(disLikes=>{
+                DisLike.findByPk(disLikes.id,{
+                    include:[{
+                        model:user,
+                        attributes:['username']
+                    }]
+                }).then(disLikeExist=>{
+                    res.status(200).json(disLikeExist);
+                }).catch(error=>{
+                    console.log(error);
+                })
             
             }).catch(error=>{
               console.log(error);
@@ -35,6 +44,7 @@ exports.addDisLike=(req,res,next)=>{
 
 
 };
+//function pour supprimer un dislike
 exports.deleteDisLike=(req,res,next)=>{
     console.log(req.params.id);
     console.log(req.params.user);

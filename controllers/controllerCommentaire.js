@@ -2,6 +2,8 @@ const sequelize=require('../database');
 const commentaire=require('../models/commentaire');
 const Message = require('../models/message');
 const User = require('../models/user');
+
+//function pour créer un commentaire
 exports.createdCommentaire=(req,res,next)=>{
   
   //  console.log(req.body);
@@ -44,6 +46,7 @@ sequelize.sync().then(()=>{
 });
 
 };
+//function pour obtenir commentaire
 exports.getOneCommentaire=(req,res,next)=>{
     console.log('params',req.params.id)
     commentaire.findByPk(req.params.id,{
@@ -58,6 +61,7 @@ exports.getOneCommentaire=(req,res,next)=>{
         console.log(error)
     })
 }
+//function pour recupérer tous les commentaires
 exports.getAllCommentaire=(req,res,next)=>{
     commentaire.findAll({
         include:[{
