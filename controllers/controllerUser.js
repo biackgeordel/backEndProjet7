@@ -29,6 +29,7 @@ exports.userSignup=(req,res,next)=>{
                    password:password,
                    username:req.body.username,
                    dateUser:req.body.date,
+                   admin:req.body.admin,
                    //assignation de l'image par defaut pour la création d'un compte
                    urlImage:`${req.protocol}://${req.get('host')}/images/default/user.jpg`,
                 }).then((user)=>{
@@ -48,7 +49,7 @@ exports.userSignup=(req,res,next)=>{
                     
                   
                 }).catch(error=>{
-                    //console.log(error);
+                   // console.log(error);
                     let tabError=[];
                     if(error){
                         error.errors.forEach(element => {
@@ -56,7 +57,7 @@ exports.userSignup=(req,res,next)=>{
                             
                         });
                     }
-                    return res.status(401).json({message:tabError});
+                    return res.status(401).json({message:tabError[0]});
                     
                 })
         sequelize.sync();
@@ -88,22 +89,26 @@ exports.userLogin= async (req,res)=>{
     if(userExist){
         const valid= await bcrypt.compare(req.body.password,userExist.password);
         if(valid){
+            console.log(userExist.admin);
             res.status(200).json({
                 id:userExist.id,
                 username:userExist.username,
+                admin:userExist.admin,
                 token:jwt.sign(
                     {id:userExist.id},
                     process.env.SECRET_RANDOM,
                     {expiresIn:'24h'}
                 )
+                
                 })
             }else{
-                return res.status(400).json({message:"mot de passe incorrectes"});
+                return res.status(400).json({message:"Le mot de passe saisi"
+                +" ne correspond pas à ce compte"});
             }
 
 
     }else{
-        return res.status(404).json({message:"NOT FOUND USER"});
+        return res.status(404).json({message:"  Ce compte utilisateur n'existe pas "});
     }
 }
 

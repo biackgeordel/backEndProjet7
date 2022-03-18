@@ -32,12 +32,13 @@ sequelize.authenticate().then(()=>{
 app.use(express.json());
 
 app.use('/images',express.static(path.join(__dirname, 'images')));
+app.use(helmet());
 app.use('/api/auth',routeMsg);
 app.use('/api/auth',routeUser);
 app.use('/api/auth',routeCommentaire);
 app.use('/api/auth',routeLike);
 app.use('/api/auth',routeDisLike);
-app.use(helmet());
+
 
 
 

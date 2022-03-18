@@ -19,17 +19,30 @@ User.init({
     allowNull:false,
     unique:{msg:"username que vous avez saisi  existe déjâ"},
     validate:{
-      is:/^[a-z-A-Z]+[\s/-]?[a-z-A-Z-0-9]+$/g
+     // is:/^[a-z-A-Z]+[\s/-]?[a-z-A-Z-0-9]+$/g,
+     isUsername(value){
+      const expRegex=new RegExp(/^[a-z-A-Z]+[\s/-]?[a-z-A-Z-0-9]+$/g);
+        let valeur=expRegex.test(value);
+        if(valeur===false){
+          throw  new Error ("le nom d'utlisateur  doit comporter des lettres  ");
+        }
+
+        
+      }
+    
     }
-  
-    // allowNull defaults to true
+  },
+  admin:{
+    type:DataTypes.BOOLEAN,
+    defaultValue:false,
+    allowNull:false
   },
   pays:{
     type: DataTypes.STRING,
     allowNull:false,
     defaultValue:"inconnu",
     validate:{
-      validationAttribut(value){
+      validationPays(value){
         const expRegex=new RegExp(/^[a-z-A-Z]+[\w*\W]+$/g);
           let valeur=expRegex.test(value);
           if(valeur===false){
@@ -46,7 +59,7 @@ User.init({
     defaultValue:"inconnue",
     validate:{
    
-      validationAttribut(value){
+      validationVille(value){
       const expRegex=new RegExp(/^[a-z-A-Z]+[\w*\W]+$/g);
         let valeur=expRegex.test(value);
         if(valeur===false){
@@ -64,7 +77,7 @@ User.init({
     defaultValue:"aucune information",
     validate:{
   
-      validationAttribut(value){
+      validationBio(value){
         const expRegex=new RegExp(/^[a-z-A-Z]+[\w*\W]+$/g);
           let valeur=expRegex.test(value);
           if(valeur===false){

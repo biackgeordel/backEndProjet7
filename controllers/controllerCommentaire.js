@@ -19,6 +19,7 @@ sequelize.sync().then(()=>{
     ).then((comments)=>{
       if(comments.id){
         commentaire.findByPk(comments.id,{
+            attributes:['id','MessageId','description','UserId','dateCommentaire'],
          include:[{
              model:User,
              attributes:['username','urlImage']
@@ -75,14 +76,21 @@ exports.getAllCommentaire=(req,res,next)=>{
         }
     
     ],
-    
-
-    }).then(comments=>{
+     }).then(comments=>{
         res.status(200).json(comments)
     }).catch(error=>{
         console.log(error)
     })
-
-
-
+}
+//function pour supprimer un commentaire
+exports.deleteCommentaire=(req,res,next)=>{
+    commentaire.destroy({
+        where:{
+            id:req.params.id
+        }
+    }).then(response=>{
+        res.status(200).json(response);
+    }).catch(error=>{
+        console.log(error);
+    })
 }

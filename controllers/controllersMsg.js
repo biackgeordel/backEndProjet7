@@ -51,13 +51,13 @@ exports.getAllMessage= async (req,res,next)=>{
         },
       {
           model:commentaire,
-           attributes:['id','description','dateCommentaire'],
+           attributes:['id','description','dateCommentaire','UserId'],
           separate:true,
           order:[['createdAt','DESC']],
             include:[
             {
               model:user,
-              attributes:['username','urlImage']
+              attributes:['username','urlImage','id']
             }
           ]
         
@@ -108,7 +108,7 @@ exports.getOneMessage=(req,res,next)=>{
           include:[
           {
             model:user,
-            attributes:['username','urlImage']
+            attributes:['username','urlImage','UserId']
           }
         ]
       
