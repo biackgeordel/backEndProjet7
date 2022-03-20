@@ -18,11 +18,12 @@ exports.userSignup=(req,res,next)=>{
             }else{
             return res.status(401).json({message:"le format de votre email n'est pas accepté"});
             }
-            if(req.body.password.match(regexPassword)){
+            if(req.body.password.match(regexPassword) && req.body.password.length>=6){
                 password=bcrypt.hashSync(req.body.password,10);
             }else{
-               return res.status(401).json({message:"le mot de passe doit"+
-                "contenir un maj suivi des lettres alphanumeriques et d'un caractère spécial"});
+               return res.status(401).json({message:"le mot de passe doit avoir au moins 6"+
+                " caractères et contenir un maj suivi des lettres alphanumeriques"+
+                 " et d'un caractère spécial(!$*&#)"});
             }           
                 user.create({
                     email:email,
@@ -111,7 +112,7 @@ exports.userLogin= async (req,res)=>{
         return res.status(404).json({message:"  Ce compte utilisateur n'existe pas "});
     }
 }
-
+//middleware pour recupérer un user
 exports.getOne=(req,res)=>{
   //  console.log(req.params.id);
     user.findOne({
@@ -157,9 +158,15 @@ exports.updateUser=(req,res,next)=>{
             console.log(response);
             res.status(200).json(response);
         }).catch(error=>{
-           console.log(error);
            let tabError=[];
            if(error){
+               //on supprimer l'image si error existe
+               if(req.file){
+                   let path=req.file.path;
+                fs.unlink(path,()=>{
+                    console.log('image supprimée');
+                });
+               }
                let message=error.errors;
               message.forEach(element=>{
                   tabError.push(element.message);

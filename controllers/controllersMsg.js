@@ -24,15 +24,23 @@ exports.createdMessage=(req,res,next)=>{
     }).then(messages=>{
        
     res.status(200).json({msg:"ok"});
+
     
     }).catch(error=>{
      let tabError=[];
+     let path=req.file.path;
         if(error){
+          //suppression de l'image si error existe
+          fs.unlink(path,()=>{
+            console.log("image supprimée");
+          });
+
           error.errors.forEach(element => {
             tabError.push(element.message);
           });
         }
         return res.status(401).json({message:tabError});
+      
         
     });
     sequelize.sync();
