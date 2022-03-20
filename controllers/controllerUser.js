@@ -11,18 +11,18 @@ exports.userSignup=(req,res,next)=>{
     let  password;
     if(req.body.password && req.body.email && req.body.username){
    const regexEmail=new RegExp(/^[a-z]+[.a-z0-9\-]+@[a-z]+[.][a-z]{2,}$/);
-   const regexPassword=new RegExp(/^[A-Z][a-zA-Z]+[0-9]+[$!#&*]$/g);
+   const regexPassword=new RegExp(/^[A-Z][a-zA-Z-0-9]+[$!#&*]$/g);
             if(req.body.email.match(regexEmail)){
                 email=req.body.email;
         
             }else{
-            return res.status(401).json({message:"le format de votre email n\'est pas accepté"});
+            return res.status(401).json({message:"le format de votre email n'est pas accepté"});
             }
             if(req.body.password.match(regexPassword)){
                 password=bcrypt.hashSync(req.body.password,10);
             }else{
                return res.status(401).json({message:"le mot de passe doit"+
-                "contenir un maj suivi des lettres alphanumeriques et d\'un caractère spécial"});
+                "contenir un maj suivi des lettres alphanumeriques et d'un caractère spécial"});
             }           
                 user.create({
                     email:email,

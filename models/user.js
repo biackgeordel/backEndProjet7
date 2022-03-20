@@ -19,16 +19,29 @@ User.init({
     allowNull:false,
     unique:{msg:"username que vous avez saisi  existe déjâ"},
     validate:{
-     // is:/^[a-z-A-Z]+[\s/-]?[a-z-A-Z-0-9]+$/g,
      isUsername(value){
-      const expRegex=new RegExp(/^[a-z-A-Z]+[\s/-]?[a-z-A-Z-0-9]+$/g);
-        let valeur=expRegex.test(value);
-        if(valeur===false){
-          throw  new Error ("le nom d'utlisateur  doit comporter des lettres  ");
+
+      /*const expRegex=new RegExp(/^[a-z-A-Z]+[\s]?[a-z-A-Z-0-9]+$/g);
+      let valeur=expRegex.test(value);
+      if(valeur===false){
+        throw  new Error ("le nom d'utlisateur  doit contenir"+ 
+        " des lettres ,un epsace ou un tiret pour les noms composés  ");
+      }*/
+      if(value.length>=3){
+        const expRegex=new RegExp(/^[a-z-A-Z]+[\s]?[a-z-A-Z-0-9]+$/g);
+          let valeur=expRegex.test(value);
+          if(valeur===false){
+            throw  new Error ("le nom d'utlisateur  doit contenir"+ 
+            " des lettres ,un epsace ou un tiret pour les noms composés  ");
+            
+          }
+       }
+       else{
+         throw  new Error ("le username  doit avoir au moins 3 caractères");
         }
 
-        
-      }
+      
+    }
     
     }
   },
@@ -46,7 +59,8 @@ User.init({
         const expRegex=new RegExp(/^[a-z-A-Z]+[\w*\W]+$/g);
           let valeur=expRegex.test(value);
           if(valeur===false){
-            throw  new Error ("les caractères saisi pour le pays ne sont pas acceptés");
+            throw  new Error ("le nom du pays doit contenir au moins 3 caractères"+
+            " ou les caractères saisi pour le pays ne sont pas acceptés");
           }
   
           
@@ -63,7 +77,8 @@ User.init({
       const expRegex=new RegExp(/^[a-z-A-Z]+[\w*\W]+$/g);
         let valeur=expRegex.test(value);
         if(valeur===false){
-          throw  new Error ("les caractères saisi pour la ville  ne sont pas acceptés");
+          throw  new Error ("le nom de la ville doit contenir au moins 3 caractères"+
+          " ou les caractères saisi pour la ville  ne sont pas acceptés");
         }
 
         
@@ -78,11 +93,17 @@ User.init({
     validate:{
   
       validationBio(value){
-        const expRegex=new RegExp(/^[a-z-A-Z]+[\w*\W]+$/g);
-          let valeur=expRegex.test(value);
-          if(valeur===false){
-            throw  new Error ("les caractères saisi pour votre biographie ne sont pas acceptés");
-          }
+          if(value.length>=6){
+            const expRegex=new RegExp(/^[a-z-A-Z]+[\w*\W]+$/g);
+              let valeur=expRegex.test(value);
+              if(valeur===false){
+                throw  new Error ("les caractères saisi pour la biographie ne sont pas acceptés");
+              }
+           }
+           else{
+             throw  new Error ("la biographie  doit avoir au moins 6 caractères");
+            }
+           
   
           
         }
@@ -99,13 +120,21 @@ User.init({
   password: {
     type: DataTypes.STRING,
     allowNull:false,
+    validate:{
+      validationPassword(value){
+        if(value.length<=5){
+          throw  new Error ("le mot de passe   doit avoir au moins 6 caractères");
+         
+        }
+      }
+    }
 
     // allowNull defaults to true
   },
   email:{
       type:DataTypes.STRING,
       allowNull:false,
-      unique:{msg:"l'email que vous avez  saisi existe déjâ"}
+      unique:{msg:"L'email que vous avez  saisi existe déjâ"}
  
 
   },

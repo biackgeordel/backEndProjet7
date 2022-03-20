@@ -1,4 +1,5 @@
 const jwt=require('jsonwebtoken');
+require('dotenv').config({path:"../configuration.env"});
 module.exports=(req,res,next)=>{
         const auth=(req.headers.authorization);
         let userId="";
@@ -13,7 +14,7 @@ module.exports=(req,res,next)=>{
         console.log(userId);
         console.log("mon token");
         console.log(auth);
-        jwt.verify(auth,'RANDOM_TOKEN_SECRET',(error,tabToken)=>{
+        jwt.verify(auth,process.env.SECRET_RANDOM,(error,tabToken)=>{
             if(!error){
                 if(tabToken.id===userId){
                     console.log("vous etes authentifié");
