@@ -1,5 +1,6 @@
 # backendProjet7 #
 Pour lancer le backend du projet il faut suivre les différents étapes:.
+## création de la base de données
 Créer une database Mysql (les tables sont générées automatiquement). 
 ## installation des packages ##
 npm install.
