@@ -20,15 +20,8 @@ User.init({
     unique:{msg:"username que vous avez saisi  existe déjâ"},
     validate:{
      isUsername(value){
-
-      /*const expRegex=new RegExp(/^[a-z-A-Z]+[\s]?[a-z-A-Z-0-9]+$/g);
-      let valeur=expRegex.test(value);
-      if(valeur===false){
-        throw  new Error ("le nom d'utlisateur  doit contenir"+ 
-        " des lettres ,un epsace ou un tiret pour les noms composés  ");
-      }*/
       if(value.length>=3){
-        const expRegex=new RegExp(/^[a-z-A-Z]+[\s]?[a-z-A-Z-0-9]+$/g);
+        const expRegex=new RegExp(/^[a-z-A-Z]+[\s]{0,1}[\w]+$/g);
           let valeur=expRegex.test(value);
           if(valeur===false){
             throw  new Error ("le nom d'utlisateur  doit contenir"+ 

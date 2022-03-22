@@ -119,7 +119,7 @@ exports.getOne=(req,res)=>{
         where:{
             id:req.params.id
         },
-        attributes:['ville','pays','bio','urlImage']
+        attributes:['ville','pays','bio','urlImage','dateUser']
     })
     .then(user=>{
       //  console.log(user);
